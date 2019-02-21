@@ -14,7 +14,7 @@ import java.util.Stack;
 
 /* 
 Julianne and Erin
-CS241 Paired Programming Assignment
+CS 241 Paired Programming Assignment
 */
 
 public class Lattice {
@@ -43,16 +43,7 @@ public class Lattice {
 	// 1) The edge's label (word)
 	// 2) The edge's acoustic model score (amScore)
 	// 3) The edge's language model score (lmScore)
-	// If no edge exists from node i to node j, adjMatrix[i][j] == null
-	// - Field nodeTimes is allocated and populated with the timestamps for each
-	// node
-	// Notes:
-	// - If you encounter a FileNotFoundException, print to standard error
-	// "Error: Unable to open file " + latticeFilename
-	// and exit with status (return code) 1
-	// - If you encounter a NoSuchElementException, print to standard error
-	// "Error: Not able to parse file " + latticeFilename
-	// and exit with status (return code) 2
+
 	public Lattice(String latticeFilename) {
 		String[][] latticeEntries = readFile(latticeFilename);
 		parseFileHeader(latticeEntries);
@@ -100,15 +91,7 @@ public class Lattice {
 	// format as the input files. Nodes should be sorted ascending by node
 	// index, edges should be sorted primarily by start node index, and
 	// secondarily by end node index
-	// Notes:
-	// - Do not store the input string verbatim: reconstruct it on they fly
-	// from the class's fields
-	// - toString simply returns a string, it should not print anything itself
-	// Hints:
-	// - You can use the String.format method to print a floating point value
-	// to two decimal places
-	// - A StringBuilder is asymptotically more efficient for accumulating a
-	// String than repeated concatenation
+
 	public String toString() {
 
 		StringBuilder string = new StringBuilder("id " + utteranceID + "\n" + "start " + startIdx + "\n" + "end "
@@ -136,14 +119,7 @@ public class Lattice {
 	// Post-conditions:
 	// - A new Hypothesis object is returned that contains the shortest path
 	// (aka most probable path) from the startIdx to the endIdx
-	// Hints:
-	// - You can create a new empty Hypothesis object and then
-	// repeatedly call Hypothesis's addWord method to add the words and
-	// weights, but this needs to be done in order (first to last word)
-	// Backtracking will give you words in reverse order.
-	// - java.lang.Double.POSITIVE_INFINITY represents positive infinity
-	// Notes:
-	// - It is okay if this algorithm has time complexity O(V^2)
+
 	public Hypothesis decode(double lmScale) {
 		Stack<Integer> result = new Stack<>();
 		
@@ -248,13 +224,7 @@ public class Lattice {
 	// - None
 	// Post-conditions:
 	// - Returns the total number of distinct paths from startIdx to endIdx
-	// (do not count other subpaths)
-	// Hints:
-	// - The straightforward recursive traversal is prohibitively slow
-	// - This can be solved efficiently using something similar to the
-	// shortest path algorithm used in decode
-	// Instead of min'ing scores over the incoming edges, you'll want to
-	// do some other operation...
+
 	public java.math.BigInteger countAllPaths() {
 		BigInteger[] count = new BigInteger[numNodes];
 		ArrayList<LinkedList<Integer>> adjSet = createAdjSet();
@@ -282,7 +252,6 @@ public class Lattice {
 	// Post-conditions:
 	// - Returns the lattice density, which is defined to be:
 	// (# of non -silence- words in lattice) / (# seconds from start to end index)
-	// Note that multiwords (e.g. to_the) count as a single non-silence word
 	public double getLatticeDensity() {
 		double numNonSilence = 0.0;
 		double numSeconds = nodeTimes[nodeTimes.length - 1] - nodeTimes[0];
@@ -297,16 +266,11 @@ public class Lattice {
 		return numNonSilence / numSeconds;
 	}
 
-	// writeAsDot - write lattice in dot format
+	// writeAsDot 
 	// Pre-conditions:
 	// - dotFilename is the name of the intended output file
 	// Post-conditions:
 	// - The lattice is written in the specified dot format to dotFilename
-	// Notes:
-	// - See the assignment description for the exact formatting to use
-	// - For context on the dot format, see
-	// - http://en.wikipedia.org/wiki/DOT_%28graph_description_language%29
-	// - http://www.graphviz.org/pdf/dotguide.pdf
 	public void writeAsDot(String dotFilename) {
 		File file = new File(dotFilename);
 
@@ -344,13 +308,12 @@ public class Lattice {
 		return string.toString();
 	}
 
-	// saveAsFile - write in the simplified lattice format (same as input format)
+	// saveAsFile
 	// Pre-conditions:
 	// - latticeOutputFilename is the name of the intended output file
 	// Post-conditions:
 	// - The lattice's toString() representation is written to the output file
-	// Note:
-	// - This output file should be in the same format as the input .lattice file
+
 	public void saveAsFile(String latticeOutputFilename) {
 		File file = new File(latticeOutputFilename);
 
@@ -371,7 +334,7 @@ public class Lattice {
 		return;
 	}
 
-	// uniqueWordsAtTime - find all words at a certain point in time
+	// uniqueWordsAtTime 
 	// Pre-conditions:
 	// - time is the time you want to query
 	// Post-conditions:
@@ -394,7 +357,7 @@ public class Lattice {
 		return uniqueWords;
 	}
 
-	// printSortedHits - print in sorted order all times where a given token appears
+	// printSortedHits
 	// Pre-conditions:
 	// - word is the word (or multiword) that you want to find in the lattice
 	// Post-conditions:
@@ -403,9 +366,7 @@ public class Lattice {
 	// All times should be printed on the same line, separated by a single space
 	// character
 	// (If no instances appear, nothing is printed)
-	// Note:
-	// - java.util.Arrays.sort can be used to sort
-	// - PrintStream's format method can print numbers to two decimal places
+
 	public void printSortedHits(String word) {
 		List<Double> times = new ArrayList<>();
 
@@ -427,7 +388,7 @@ public class Lattice {
 
 	}
 
-	// readFile - read in a lattice file
+	// readFile 
 	// Pre-conditions:
 	// - latticeFilename is the name of the incoming lattice file
 	// Post-conditions:
@@ -481,7 +442,7 @@ public class Lattice {
 		return latticeArray;
 	}
 
-	// parseFileHeader - assigns header values
+	// parseFileHeader 
 	// Pre-conditions:
 	// - latticeEntries is the name of the lattice array
 	// Post-conditions:
@@ -507,7 +468,7 @@ public class Lattice {
 		}
 	}
 
-	// parseEdges - assigns edges
+	// parseEdges
 	// Pre-conditions:
 	// - latticeEntries is the name of the lattice array
 	// Post-conditions:
@@ -531,7 +492,7 @@ public class Lattice {
 		return adjMatrix;
 	}
 
-	// parseNodeTimes - assigns nodeTimes to nodeIndexes
+	// parseNodeTimes 
 	// Pre-conditions:
 	// - latticeEntries is the name of the lattice array
 	// Post-conditions:
@@ -552,7 +513,7 @@ public class Lattice {
 		return nodeTimes;
 	}
 
-	// findInDegrees - counts the number of incoming edges a node has
+	// findInDegrees 
 	// Pre-conditions:
 	// - adjMatrix is the name of the adjacency matrix for the lattice
 	// Post-conditions:
@@ -570,7 +531,7 @@ public class Lattice {
 		return inDegrees;
 	}
 
-	// createAdjSet - creates an adjacency set
+	// createAdjSet 
 	// Pre-conditions:
 	// - None
 	// Post-conditions:
